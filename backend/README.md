@@ -48,7 +48,7 @@ flask run --reload
 
 The `--reload` flag will detect file changes and restart the server automatically.
 
-## Tasks
+## Tasks (Completed)
 
 ### Setup Auth0
 
@@ -77,9 +77,74 @@ The `--reload` flag will detect file changes and restart the server automaticall
     - Run the collection and correct any errors.
     - Export the collection overwriting the one we've included so that we have your proper JWTs during review!
 
-### Implement The Server
+### Implement The Server (Completed)
 
 There are `@TODO` comments throughout the `./backend/src`. We recommend tackling the files in order and from top to bottom:
 
 1. `./src/auth/auth.py`
 2. `./src/api.py`
+
+## API Reference
+### Endpoints
+GET /drinks
+- Description: a public endpoint containing only the drink.short() data representation
+- Request Arguments: None
+- Error Codes: 404
+- Returns: status code 200 and json
+ ```javascript
+{
+"success": True,
+ "drinks": drinks
+} 
+ ```
+where drinks is the list of drinks
+
+GET /drinks-detail
+- Description: Shows the details of all drinks
+- Request Arguments: JWT token, Requires permission 'get:drinks-detail'
+- Error Codes: 400, 401, 403, 404
+- Returns:
+```javascript
+{"success": True,
+ "drinks": drinks}
+```
+where drinks is the list of drinks containing the drink.long() data
+ representation
+ 
+POST /drinks
+- Description: Creates a new row in the drinks table
+- Request Arguments: JWT token, requires the 'post:drinks'permission
+- Error Codes: 400, 401, 403, 422
+- Returns:
+```javascript
+{"success": True,
+ "drinks": drinks}
+```
+where drinks is the list of drinks containing the drink.long() data
+ representation
+ 
+PATCH /drinks/<id>
+- Description: Updates drink specified by id
+- Request Arguments: JWT token, requires the permission 'patch:drinks
+', drink_id integer value
+ - Error Codes: 400, 401, 403, 404, 422
+- Returns:
+```javascript
+{
+"success": True, 
+"drinks": drink
+}
+```
+where drink an array containing only the updated drink
+
+DELETE /drinks/<id>
+- Description: Deletes drink specified by id
+- Request Arguments: JWT token, requires 'delete:drinks' permission, id
+ integer value for the drink to be deleted
+- Error Codes: 400, 401, 403, 422
+- Returns:
+```javascript
+{"success": True, 
+"delete": drink_id}
+```
+where drink_id is the id of the deleted drink
